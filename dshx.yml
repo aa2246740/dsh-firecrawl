@@ -1,0 +1,5 @@
+id: dsh-web-search-firecrawl
+entry: src/dsh-web-search-firecrawl.ts
+marker: "[my-plugins/dsh-web-search-firecrawl] loaded"
+kind: client
+profile: web

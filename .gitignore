@@ -1,0 +1,9 @@
+node_modules/
+.pnpm-store/
+lib/
+outputs/
+.dshx/
+.env
+.env.*
+*.log
+.DS_Store

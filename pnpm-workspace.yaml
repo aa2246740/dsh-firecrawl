@@ -1,0 +1,7 @@
+# Standalone external-plugin workspace: every @deepseek-ai dependency resolves
+# from the public registry (mirroring my-plugins/dsh-image-conatiner), never
+# from the Harness checkout. The release-age exclusions let the pinned
+# pre-release lines install immediately under registries that delay fresh
+# versions by default.
+minimumReleaseAgeExclude:
+  - '@deepseek-ai/*@0.1.2-rc.1'

@@ -1,0 +1,69 @@
+{
+  "name": "dsh-web-search-firecrawl",
+  "version": "0.1.0",
+  "description": "Firecrawl search provider and multi-account settings for DeepSeek Harness 0.1.2-rc.1",
+  "repository": { "type": "git", "url": "https://github.com/aa2246740/dsh-firecrawl.git" },
+  "type": "module",
+  "main": "lib/dsh-web-search-firecrawl.js",
+  "types": "lib/types/dsh-web-search-firecrawl.d.ts",
+  "scripts": {
+    "build": "tsc -p tsconfig.json && tsdown",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "pnpm build && node --test tests/*.mjs"
+  },
+  "exports": {
+    ".": {
+      "types": "./lib/types/dsh-web-search-firecrawl.d.ts",
+      "default": "./lib/dsh-web-search-firecrawl.js"
+    },
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "client": {
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-settings-plugins"
+      ],
+      "platform": "web"
+    }
+  },
+  "files": [
+    "lib/*.js",
+    "lib/*.js.map",
+    "lib/types/**/*.d.ts",
+    "cordis.yml",
+    "README.md"
+  ],
+  "engines": {
+    "node": "^22.19.0 || >=24.0.0"
+  },
+  "license": "MIT",
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh-client-ui-settings": "0.1.2-rc.1",
+    "@deepseek-ai/dsh-client-ui-settings-plugins": "0.1.2-rc.1",
+    "@deepseek-ai/dsh-settings": "0.1.2-rc.1",
+    "@deepseek-ai/dsh-web": "0.1.2-rc.1",
+    "@deepseek-ai/schemastery": "^3.18.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1",
+    "@deepseek-ai/dsh-api-remotes": "0.1.2-rc.1",
+    "@deepseek-ai/dsh-client-ui-slots": "0.1.2-rc.1",
+    "@deepseek-ai/dsh-client-ui-renderer": "0.1.2-rc.1",
+    "@deepseek-ai/dsh-scope": "0.1.2-rc.1",
+    "@deepseek-ai/dsh-invariants": "0.1.2-rc.1",
+    "@deepseek-ai/dsh-client-ui-settings": "0.1.2-rc.1",
+    "@deepseek-ai/dsh-client-ui-settings-plugins": "0.1.2-rc.1",
+    "@deepseek-ai/dsh-settings": "0.1.2-rc.1",
+    "@deepseek-ai/dsh-web": "0.1.2-rc.1",
+    "@deepseek-ai/schemastery": "^3.18.1",
+    "@types/react": "~18.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tsdown": "^0.22.2",
+    "typescript": "^6.0.3"
+  }
+}
