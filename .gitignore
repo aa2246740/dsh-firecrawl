@@ -1,6 +1,8 @@
 node_modules
 .pnpm-store/
-lib/
+lib/types/**/*.js
+lib/types/**/*.js.map
+lib/types/**/*.d.ts.map
 outputs/
 .dshx/
 .env

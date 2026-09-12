@@ -1,23 +1,58 @@
-import { existsSync, readFileSync } from 'node:fs'
-import { homedir } from 'node:os'
-import { join, resolve } from 'node:path'
-import { pathToFileURL } from 'node:url'
+import { readFileSync } from 'node:fs'
+import { isBuiltin } from 'node:module'
 
-function resolveHarness() {
-  const configured = process.env.DSHX_HARNESS?.trim()
-  const configPath = join(homedir(), '.config/dshx/harness')
-  const recorded = existsSync(configPath) ? readFileSync(configPath, 'utf8').trim() : undefined
-  const roots = [...new Set([configured, recorded].filter(Boolean).map(value => resolve(value)))]
-  if (roots.length !== 1) {
-    throw new Error('dshx client build requires one Harness root from DSHX_HARNESS or ~/.config/dshx/harness')
-  }
-  return roots[0]
+const manifest = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8')) as {
+  name: string
+  dependencies?: Record<string, string>
+  peerDependencies?: Record<string, string>
+  optionalDependencies?: Record<string, string>
 }
 
-const adapter = join(resolveHarness(), 'tools/dshx/src/client-build.js')
-if (!existsSync(adapter)) throw new Error(`dshx client build adapter not found: ${adapter}`)
-const { externalClientBundle } = await import(pathToFileURL(adapter).href)
+const id = manifest.name
+const production = [...new Set([
+  ...Object.keys(manifest.dependencies ?? {}),
+  ...Object.keys(manifest.peerDependencies ?? {}),
+  ...Object.keys(manifest.optionalDependencies ?? {}),
+])].sort().map(name => new RegExp(`^${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(/|$)`))
 
-export default externalClientBundle('dsh-web-search-firecrawl', ['lib/types/dsh-web-search-firecrawl.js'], {
-  clientEntry: 'src/client/index.tsx',
-})
+function matchesProduction(specifier: string): boolean {
+  return production.some(pattern => pattern.test(specifier))
+}
+
+const clientExternals = new Set(['react', 'react/jsx-runtime', 'react-dom'])
+
+export default [{
+  name: id,
+  entry: ['lib/types/dsh-web-search-firecrawl.js'],
+  outDir: 'lib',
+  format: ['esm'],
+  platform: 'node',
+  target: 'es2024',
+  fixedExtension: false,
+  dts: false,
+  clean: false,
+  deps: {
+    neverBundle: (specifier: string) => matchesProduction(specifier),
+    alwaysBundle: (specifier: string) => !isBuiltin(specifier) && !matchesProduction(specifier),
+  },
+}, {
+  name: `${id}/client`,
+  entry: { client: 'src/client/index.tsx' },
+  outDir: 'lib',
+  format: 'cjs',
+  platform: 'browser',
+  target: 'es2024',
+  dts: false,
+  sourcemap: true,
+  clean: false,
+  deps: {
+    neverBundle: (specifier: string) => clientExternals.has(specifier),
+    alwaysBundle: (specifier: string) => !clientExternals.has(specifier),
+  },
+  outputOptions: {
+    entryFileNames: 'client.js',
+    banner: `window.__ModuleLoader__.load({ id: ${JSON.stringify(id)}, factory: (require) => {`,
+    footer: 'return module.exports; } });',
+    intro: 'var module = { exports: {} }; var exports = module.exports;',
+  },
+}]

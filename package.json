@@ -1,8 +1,17 @@
 {
   "name": "dsh-web-search-firecrawl",
-  "version": "0.1.0",
-  "description": "Firecrawl search provider and multi-account settings for DeepSeek Harness 0.1.2-rc.1",
+  "version": "0.1.1",
+  "description": "Firecrawl search provider and multi-account settings for DeepSeek Harness",
   "repository": { "type": "git", "url": "https://github.com/aa2246740/dsh-firecrawl.git" },
+  "homepage": "https://github.com/aa2246740/dsh-firecrawl#readme",
+  "bugs": { "url": "https://github.com/aa2246740/dsh-firecrawl/issues" },
+  "keywords": [
+    "deepseek-harness",
+    "dsh",
+    "dsh-plugin",
+    "firecrawl",
+    "web-search"
+  ],
   "type": "module",
   "main": "lib/dsh-web-search-firecrawl.js",
   "types": "lib/types/dsh-web-search-firecrawl.d.ts",
@@ -17,9 +26,13 @@
       "default": "./lib/dsh-web-search-firecrawl.js"
     },
     "./client": "./lib/client.js",
+    "./cordis.patch.yml": "./cordis.patch.yml",
     "./package.json": "./package.json"
   },
   "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
     "client": {
       "inject": [
         "@deepseek-ai/dsh-client-ui-settings-plugins"
@@ -31,8 +44,9 @@
     "lib/*.js",
     "lib/*.js.map",
     "lib/types/**/*.d.ts",
-    "cordis.yml",
-    "README.md"
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
   ],
   "engines": {
     "node": "^22.19.0 || >=24.0.0"

@@ -101,7 +101,7 @@ function FirecrawlCard({ scope, accounts: controller, ctx }: { scope: SettingsSc
           onBlur={event => { const value = Number(event.target.value); if (Number.isInteger(value) && value >= 0) act(() => scope.set('cooldownMs', value)) }} /></label>
       </fieldset>
       {error && <p role="alert">{error}</p>}
-      <p style={{ fontSize: 12, opacity: 0.75 }}>由外部 DSHX 在当前 Host 的 watched patch 设置 <code>web.config.searchProvider: firecrawl</code> 后生效，无需为了路由配置重启。官方显式配置优先于环境变量。模型路由若隐藏 web_search，请使用支持该工具的新会话。</p>
+      <p style={{ fontSize: 12, opacity: 0.75 }}>这个 bundle 会把 <code>web.searchProvider</code> 设为 <code>firecrawl</code>。加好账号后，用会暴露 <code>web_search</code> 的新会话。</p>
     </div>}
   </li>
 }
