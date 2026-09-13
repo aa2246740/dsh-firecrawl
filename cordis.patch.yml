@@ -1,0 +1,11 @@
+# Official bundle layer. `dsh plugin add` applies this into the profile.
+# Rows resolve by package name so the installed copy is what boots.
+# Official `id: web` already pins searchProvider + fetchProvider; a patch
+# replaces that whole config, so both keys are restated.
+- id: web
+  config:
+    searchProvider: firecrawl
+    fetchProvider: http
+- insert:
+    - id: dsh-web-search-firecrawl
+      name: dsh-web-search-firecrawl

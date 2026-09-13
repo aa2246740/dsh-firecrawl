@@ -1,5 +1,5 @@
-# portable overlay: relative name only. --patch resolves against the profile
-# directory, so cold-boot through `dshx start` / `dshx verify-boot`, not raw pnpm dsh.
+# Developer --patch overlay: relative source only. Stock install uses
+# cordis.patch.yml via dsh.bundle, not this file.
 - insert:
     - id: dsh-web-search-firecrawl
       name: './src/dsh-web-search-firecrawl.ts'
