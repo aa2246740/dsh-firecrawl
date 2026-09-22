@@ -14,7 +14,7 @@ PATH 上要有官方 `dsh`（没有就用 `npx @deepseek-ai/dsh`）和 **pnpm**�
 
 这个 bundle 会把官方 `web.searchProvider` 设成 `firecrawl`，并保留 `fetchProvider: http`。设置在 Settings → Plugins → Plugin configuration → **Firecrawl search**。
 
-面向官方 DeepSeek Harness **0.1.5-rc.2**。
+面向官方 DeepSeek Harness **0.1.5-rc.3**。
 
 ## 其它装法
 
