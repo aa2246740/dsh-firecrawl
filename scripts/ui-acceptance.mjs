@@ -35,16 +35,26 @@ try {
       }
       publish()
     }
-    const scope = { getSnapshot: () => snapshot, subscribe: fn => { listeners.add(fn); return () => listeners.delete(fn) }, mutate, set: (field, value) => mutate([{ op: 'set', path: [field], value }]) }
+    const scope = {
+      getSnapshot: () => snapshot,
+      subscribe: fn => { listeners.add(fn); return () => listeners.delete(fn) },
+      mutate: async (ops, expected) => { await mutate(ops, expected); return true },
+      set: async (field, value) => { await mutate([{ op: 'set', path: [field], value }]); return true },
+      unset: async () => true,
+    }
     publish()
     window.fixture = { doc }
     window.__ModuleLoader__ = { load({ factory }) {
       const jsx = (type, props, key) => React.createElement(type, { ...props, ...(key === undefined ? {} : { key }) })
       const plugin = factory(id => id === 'react' ? React : { jsx, jsxs: jsx, Fragment: React.Fragment })
       plugin.apply({
-        settingsScope: { bind: () => scope },
+        effect(register) { register() },
+        configForms: {
+          get: () => scope,
+          whileServed(_namespaces, register) { register(new Set(['dsh-web-search-firecrawl'])); return () => {} },
+        },
         remote: { settings: { describe: async () => ({ ok: true, value: { namespaces: [{ ns: 'dsh-web-search-firecrawl', secrets: Object.keys(doc.apiKeys).map(id => ({ path: ['apiKeys', id], set: true })) }] } }) } },
-        slots: { inject(_name, callback) { callback() }, register(_spec, Component) { ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(Component)) } },
+        slots: { inject(_name, callback) { callback() }, register(_spec, Component) { ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(Component, { view: 'page' })) } },
       })
     } }
   })
