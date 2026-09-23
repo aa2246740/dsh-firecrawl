@@ -179,7 +179,7 @@ function abortable<T>(operation: Promise<T>, signal?: AbortSignal): Promise<T> {
 function searchEndpointError(message: string, cause?: unknown): WebError {
   return new WebError(
     `${message}\n\nThis came from the Firecrawl search provider. Check the accounts in `
-    + 'Settings > Plugins > Plugin configuration > Firecrawl search: each saved account needs a '
+    + 'Plugins > dsh-web-search-firecrawl > 配置: each saved account needs a '
     + 'valid Firecrawl API key, and rate-limited accounts are cooled down automatically before '
     + 'they are reused. Only the user should change or choose which account serves a search.',
     'WEB_PROVIDER_ERROR',
@@ -236,7 +236,7 @@ export class FirecrawlSearchProvider implements WebSearchProvider {
     if (slots.length === 0) {
       throw new WebError(
         'Firecrawl search has no accounts configured; add at least one Firecrawl API key '
-        + 'through Settings > Plugins > Plugin configuration > Firecrawl search, or set the '
+        + 'through Plugins > dsh-web-search-firecrawl > 配置, or set the '
         + 'dsh-web-search-firecrawl config',
         'WEB_PROVIDER_CREDENTIAL_MISSING',
       )

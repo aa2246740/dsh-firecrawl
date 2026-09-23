@@ -1,6 +1,6 @@
 {
   "name": "dsh-web-search-firecrawl",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Firecrawl search provider and multi-account settings for DeepSeek Harness",
   "repository": { "type": "git", "url": "https://github.com/aa2246740/dsh-firecrawl.git" },
   "homepage": "https://github.com/aa2246740/dsh-firecrawl#readme",
@@ -35,7 +35,9 @@
     },
     "client": {
       "inject": [
-        "@deepseek-ai/dsh-client-ui-settings-plugins"
+        "@deepseek-ai/dsh-api-remotes",
+        "@deepseek-ai/dsh-client-ui-settings",
+        "@deepseek-ai/dsh-client-ui-plugin-manager"
       ],
       "platform": "web"
     }
@@ -53,27 +55,26 @@
   },
   "license": "MIT",
   "peerDependencies": {
-    "@deepseek-ai/cordis": "^4.0.1",
-    "@deepseek-ai/dsh-client-ui-settings": "^0.1.5-rc.3",
-    "@deepseek-ai/dsh-client-ui-settings-plugins": "^0.1.5-rc.3",
-    "@deepseek-ai/dsh-settings": "^0.1.5-rc.3",
-    "@deepseek-ai/dsh-web": "^0.1.5-rc.3",
-    "@deepseek-ai/schemastery": "^3.18.1",
+    "@deepseek-ai/cordis": "^4.0.4",
+    "@deepseek-ai/dsh-api-remotes": ">=0.1.7-rc.1 <0.1.8",
+    "@deepseek-ai/dsh-client-ui-plugin-manager": ">=0.1.7-rc.1 <0.1.8",
+    "@deepseek-ai/dsh-client-ui-settings": ">=0.1.7-rc.1 <0.1.8",
+    "@deepseek-ai/dsh-settings": ">=0.1.7-rc.1 <0.1.8",
+    "@deepseek-ai/dsh-web": ">=0.1.7-rc.1 <0.1.8",
+    "@deepseek-ai/schemastery": "^3.18.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@deepseek-ai/cordis": "^4.0.1",
-    "@deepseek-ai/dsh-api-remotes": "^0.1.5-rc.3",
-    "@deepseek-ai/dsh-client-ui-slots": "^0.1.5-rc.3",
-    "@deepseek-ai/dsh-client-ui-renderer": "^0.1.5-rc.3",
-    "@deepseek-ai/dsh-scope": "^0.1.5-rc.3",
-    "@deepseek-ai/dsh-invariants": "^0.1.5-rc.3",
-    "@deepseek-ai/dsh-client-ui-settings": "^0.1.5-rc.3",
-    "@deepseek-ai/dsh-client-ui-settings-plugins": "^0.1.5-rc.3",
-    "@deepseek-ai/dsh-settings": "^0.1.5-rc.3",
-    "@deepseek-ai/dsh-web": "^0.1.5-rc.3",
-    "@deepseek-ai/schemastery": "^3.18.1",
+    "@deepseek-ai/cordis": "^4.0.4",
+    "@deepseek-ai/dsh-api-remotes": ">=0.1.7-rc.1 <0.1.8",
+    "@deepseek-ai/dsh-client-ui-slots": ">=0.1.7-rc.1 <0.1.8",
+    "@deepseek-ai/dsh-client-ui-renderer": ">=0.1.7-rc.1 <0.1.8",
+    "@deepseek-ai/dsh-client-ui-plugin-manager": ">=0.1.7-rc.1 <0.1.8",
+    "@deepseek-ai/dsh-client-ui-settings": ">=0.1.7-rc.1 <0.1.8",
+    "@deepseek-ai/dsh-settings": ">=0.1.7-rc.1 <0.1.8",
+    "@deepseek-ai/dsh-web": ">=0.1.7-rc.1 <0.1.8",
+    "@deepseek-ai/schemastery": "^3.18.4",
     "@types/react": "~18.3.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

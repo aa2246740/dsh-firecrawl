@@ -1,7 +1,6 @@
 # Standalone external-plugin workspace: every @deepseek-ai dependency resolves
-# from the public registry (mirroring my-plugins/dsh-image-conatiner), never
-# from the Harness checkout. The release-age exclusions let the pinned
-# pre-release lines install immediately under registries that delay fresh
-# versions by default.
+# from the public registry, never from a Harness checkout. pnpm 10 rejects a
+# name pattern combined with a version, so the scope pattern exempts the
+# pinned 0.1.7-rc.1 lines from the release-age delay.
 minimumReleaseAgeExclude:
-  - '@deepseek-ai/*@0.1.5-rc.3'
+  - '@deepseek-ai/*'

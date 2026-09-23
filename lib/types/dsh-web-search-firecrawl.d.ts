@@ -7,14 +7,14 @@
  * Two halves, one package:
  * - Host half (this file): registers the {@link FirecrawlSearchProvider} on
  *   `ctx.web` and a `settings` section so accounts are manageable.
- * - Browser half (`src/client/`): a `settings.plugin.item` card that adds,
+ * - Browser half (`src/client/`): a `plugins.row.config` page that adds,
  *   edits, and removes accounts and tunes pool behavior.
  *
  * @module dsh-web-search-firecrawl
  */
-import type { Context } from '@deepseek-ai/cordis';
+import type { Context, Volatile } from '@deepseek-ai/cordis';
 import z from '@deepseek-ai/schemastery';
-import { type AccountSettings } from './accounts.js';
+import { type AccountMetadata, type AccountSettings } from './accounts.js';
 import { type FirecrawlPoolStrategy } from './provider.js';
 export { FIRECRAWL_DEFAULT_BASE_URL, FIRECRAWL_DEFAULT_LIMIT, FIRECRAWL_PROVIDER_ID, FirecrawlSearchProvider, } from './provider.js';
 export type { FirecrawlAccount, FirecrawlPoolStrategy, FirecrawlSearchProviderOptions, } from './provider.ts';
@@ -26,7 +26,6 @@ export declare const inject: string[];
 export declare const FIRECRAWL_SETTINGS_NAMESPACE = "dsh-web-search-firecrawl";
 /** Plugin config (all optional — `apply` fills defaults). */
 export interface Config extends AccountSettings {
-    /** Load-balanced pool of Firecrawl accounts (each is one API key). */
     /** Endpoint base; `/v1/search` is appended. Defaults to the public API. */
     baseURL?: string;
     /** Maximum search results requested per search. Defaults to 5. */
@@ -36,7 +35,20 @@ export interface Config extends AccountSettings {
     /** How long a rate-limited account stays cooled down, in ms. */
     cooldownMs?: number;
 }
-export declare const Config: z<Config>;
-/** Register the Firecrawl search provider with `ctx.web` and its settings section. */
-export declare function apply(ctx: Context, config: Config): void;
+/**
+ * Live profile config. Harness 0.1.7 reads editable fields from the plugin
+ * Config schema; only `.volatile()` fields can change without remounting.
+ * Each search calls `.get()` so one operation sees one snapshot.
+ */
+interface LiveConfig {
+    accounts: Volatile<AccountMetadata[] | undefined>;
+    apiKeys: Volatile<Record<string, string> | undefined>;
+    baseURL: Volatile<string | undefined>;
+    limit: Volatile<number | undefined>;
+    strategy: Volatile<FirecrawlPoolStrategy | undefined>;
+    cooldownMs: Volatile<number | undefined>;
+}
+export declare const Config: z;
+/** Register the Firecrawl search provider with `ctx.web`. */
+export declare function apply(ctx: Context, config: LiveConfig): void;
 //# sourceMappingURL=dsh-web-search-firecrawl.d.ts.map

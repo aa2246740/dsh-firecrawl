@@ -1,7 +1,8 @@
 import { useEffect, useState, useSyncExternalStore, type ReactNode } from 'react'
 import type { Context } from '@deepseek-ai/cordis'
-import type { SettingsScope } from '@deepseek-ai/dsh-client-ui-settings/client'
-import type {} from '@deepseek-ai/dsh-client-ui-settings-plugins/client'
+import type { ConfigForm } from '@deepseek-ai/dsh-client-ui-settings/client'
+import type {} from '@deepseek-ai/dsh-client-ui-settings/client'
+import type {} from '@deepseek-ai/dsh-client-ui-plugin-manager/client'
 import type {} from '@deepseek-ai/dsh-client-ui-slots'
 import type {} from '@deepseek-ai/dsh-client-ui-renderer/client'
 import type { SettingsDescribeValue } from '@deepseek-ai/dsh-settings/types'
@@ -10,19 +11,23 @@ import type { AccountSettings, AccountMetadata } from '../accounts.js'
 import { AccountsController } from './accounts-controller.js'
 
 const NAMESPACE = 'dsh-web-search-firecrawl'
+/** `plugins.row.config` key: `<package name>#<row id>` from cordis.patch.yml. */
+const ROW_KEY = 'dsh-web-search-firecrawl#dsh-web-search-firecrawl'
 interface Section extends AccountSettings {
   limit?: number
   strategy?: 'round-robin' | 'least-loaded'
   cooldownMs?: number
 }
 export const name = 'dsh-web-search-firecrawl-client'
-export const inject = ['slots', 'settingsScope', 'remote', 'remote.settings']
+export const inject = ['slots', 'configForms', 'remote', 'remote.settings']
 
 export function apply(ctx: Context): void {
-  const scope = ctx.settingsScope.bind<Section>({ namespace: NAMESPACE })
-  const accounts = new AccountsController(scope)
-  ctx.slots.inject('settings.plugin.item', () => ctx.slots.register({ name: 'settings.plugin.item', key: NAMESPACE },
-    () => <FirecrawlCard scope={scope} accounts={accounts} ctx={ctx} />))
+  const form = ctx.configForms.get<Section>(NAMESPACE)
+  const accounts = new AccountsController(form)
+  ctx.effect(() => ctx.configForms.whileServed([NAMESPACE], () => ctx.slots.inject('plugins.row.config', () => ctx.slots.register({
+    name: 'plugins.row.config',
+    key: ROW_KEY,
+  }, (props: { view: 'summary' | 'page' }) => <FirecrawlCard view={props.view} form={form} accounts={accounts} ctx={ctx} />))))
 }
 
 const inputStyle = { padding: '6px 8px', border: '1px solid #8886', borderRadius: 6, background: 'transparent', color: 'inherit' }
@@ -51,8 +56,13 @@ function AccountRow({ account, configured, busy, save, remove }: {
   </fieldset>
 }
 
-function FirecrawlCard({ scope, accounts: controller, ctx }: { scope: SettingsScope<Section>; accounts: AccountsController; ctx: Context }): ReactNode {
-  const snapshot = useSyncExternalStore(scope.subscribe.bind(scope), scope.getSnapshot.bind(scope))
+function FirecrawlCard({ view = 'page', form, accounts: controller, ctx }: {
+  view?: 'summary' | 'page'
+  form: ConfigForm<Section>
+  accounts: AccountsController
+  ctx: Context
+}): ReactNode {
+  const snapshot = useSyncExternalStore(form.subscribe.bind(form), form.getSnapshot.bind(form))
   const [open, setOpen] = useState(false)
   const [busy, setBusy] = useState(false)
   const [error, setError] = useState('')
@@ -69,6 +79,7 @@ function FirecrawlCard({ scope, accounts: controller, ctx }: { scope: SettingsSc
     return () => { current = false }
   }, [snapshot.revision, ctx])
 
+  if (view === 'summary') return <span>搜索账号与负载均衡</span>
   if (snapshot.status !== 'ready') return null
   const section = snapshot.value ?? {}
   async function run(action: () => Promise<void>): Promise<void> {
@@ -92,13 +103,13 @@ function FirecrawlCard({ scope, accounts: controller, ctx }: { scope: SettingsSc
       <button style={{ ...buttonStyle, marginTop: 10 }} disabled={disabled} onClick={() => act(() => controller.add(crypto.randomUUID()))}>添加账号</button>
       <p style={{ fontSize: 12, opacity: 0.75 }}>Key 只写入、不回显。填写后点“保存”；只改名称不会清除已有 key。</p>
       <fieldset disabled={disabled} style={{ border: 0, padding: 0, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-        <label>策略 <select aria-label="账号策略" style={inputStyle} value={section.strategy ?? 'round-robin'} onChange={event => act(() => scope.set('strategy', event.target.value))}>
+        <label>策略 <select aria-label="账号策略" style={inputStyle} value={section.strategy ?? 'round-robin'} onChange={event => act(() => form.set('strategy', event.target.value).then(ok => { if (!ok) throw new Error('refused') }))}>
           <option value="round-robin">轮询</option><option value="least-loaded">最少使用</option>
         </select></label>
         <label>结果数 <input aria-label="搜索结果数" style={{ ...inputStyle, width: 65 }} type="number" min={1} defaultValue={section.limit ?? 5}
-          onBlur={event => { const value = Number(event.target.value); if (Number.isInteger(value) && value > 0) act(() => scope.set('limit', value)) }} /></label>
+          onBlur={event => { const value = Number(event.target.value); if (Number.isInteger(value) && value > 0) act(() => form.set('limit', value).then(ok => { if (!ok) throw new Error('refused') })) }} /></label>
         <label>冷却毫秒 <input aria-label="冷却毫秒" style={{ ...inputStyle, width: 90 }} type="number" min={0} defaultValue={section.cooldownMs ?? 60000}
-          onBlur={event => { const value = Number(event.target.value); if (Number.isInteger(value) && value >= 0) act(() => scope.set('cooldownMs', value)) }} /></label>
+          onBlur={event => { const value = Number(event.target.value); if (Number.isInteger(value) && value >= 0) act(() => form.set('cooldownMs', value).then(ok => { if (!ok) throw new Error('refused') })) }} /></label>
       </fieldset>
       {error && <p role="alert">{error}</p>}
       <p style={{ fontSize: 12, opacity: 0.75 }}>这个 bundle 会把 <code>web.searchProvider</code> 设为 <code>firecrawl</code>。加好账号后，用会暴露 <code>web_search</code> 的新会话。</p>

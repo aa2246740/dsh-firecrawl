@@ -33,32 +33,32 @@ describe('stock DSH bundle', () => {
     const fence = readme.match(/```sh\n([\s\S]*?)```/)
     assert.equal(fence?.[1].trim(), 'dsh plugin --profile web add github:aa2246740/dsh-firecrawl')
     assert.match(readme, /\*\*pnpm\*\*/)
-    assert.match(readme, /0\.1\.5-rc\.3/)
+    assert.match(readme, /0\.1\.7-rc\.1/)
     assert.doesNotMatch(readme, /activate-new-client|my-plugins|DSHX_HARNESS|dshx /)
   })
 
-  it('Harness peers accept 0.1.5-rc.3 and stay off 0.1.7 alphas', () => {
+  it('Harness peers accept 0.1.7-rc.1 and stay off 0.1.7 alphas', () => {
     const peers = pkg.peerDependencies
     const dev = pkg.devDependencies
+    const range = '>=0.1.7-rc.1 <0.1.8'
     for (const name of [
+      '@deepseek-ai/dsh-api-remotes',
+      '@deepseek-ai/dsh-client-ui-plugin-manager',
       '@deepseek-ai/dsh-client-ui-settings',
-      '@deepseek-ai/dsh-client-ui-settings-plugins',
       '@deepseek-ai/dsh-settings',
       '@deepseek-ai/dsh-web',
     ]) {
-      assert.equal(peers[name], '^0.1.5-rc.3')
-      assert.equal(dev[name], '^0.1.5-rc.3')
+      assert.equal(peers[name], range)
+      assert.equal(dev[name], range)
     }
     for (const name of [
-      '@deepseek-ai/dsh-api-remotes',
       '@deepseek-ai/dsh-client-ui-slots',
       '@deepseek-ai/dsh-client-ui-renderer',
-      '@deepseek-ai/dsh-scope',
-      '@deepseek-ai/dsh-invariants',
     ]) {
-      assert.equal(dev[name], '^0.1.5-rc.3')
+      assert.equal(dev[name], range)
     }
+    assert.equal(peers['@deepseek-ai/dsh-client-ui-settings-plugins'], undefined)
     const declared = JSON.stringify({ peers, dev })
-    assert.doesNotMatch(declared, /0\.1\.2-rc\.1|0\.1\.7-alpha/)
+    assert.doesNotMatch(declared, /0\.1\.2-rc\.1|0\.1\.5-rc\.3|0\.1\.7-alpha/)
   })
 })

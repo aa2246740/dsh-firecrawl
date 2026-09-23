@@ -12,9 +12,9 @@ PATH 上要有官方 `dsh`（没有就用 `npx @deepseek-ai/dsh`）和 **pnpm**�
 
 在 `ctx.web` 上注册 `id: firecrawl` 的 `WebSearchProvider`，走 Firecrawl `/v1/search`。调度默认 `round-robin`，也可 `least-loaded`。`429` 或 `5xx` 切到下一个健康账号，默认冷却 60 秒。不可重试的 `4xx` 立刻失败并点名那个账号。
 
-这个 bundle 会把官方 `web.searchProvider` 设成 `firecrawl`，并保留 `fetchProvider: http`。设置在 Settings → Plugins → Plugin configuration → **Firecrawl search**。
+这个 bundle 会把官方 `web.searchProvider` 设成 `firecrawl`，并保留 `fetchProvider: http`。账号在侧栏 **插件** 里打开已安装的 `dsh-web-search-firecrawl`，再点该行的 **配置**。
 
-面向官方 DeepSeek Harness **0.1.5-rc.3**。
+面向官方 DeepSeek Harness **0.1.7-rc.1**。
 
 ## 其它装法
 
@@ -22,7 +22,7 @@ PATH 上要有官方 `dsh`（没有就用 `npx @deepseek-ai/dsh`）和 **pnpm**�
 
 ```sh
 dsh plugin --profile web add ./dsh-firecrawl
-dsh plugin --profile web add ./dsh-web-search-firecrawl-0.1.1.tgz
+dsh plugin --profile web add ./dsh-web-search-firecrawl-0.1.2.tgz
 ```
 
 `dsh.bundle` 是开机捕获的。不要再往 profile 的 `cordis.patch.yml` 手写同一条 insert，会重复挂载。
@@ -33,7 +33,7 @@ dsh plugin --profile web remove dsh-web-search-firecrawl
 
 ## 使用
 
-1. 打开 WebUI：Settings → Plugins → Plugin configuration → **Firecrawl search**。
+1. 打开 WebUI 侧栏 **插件**，进入 `dsh-web-search-firecrawl`，点 **配置**。
 2. 加至少一个 Firecrawl API key（[firecrawl.dev](https://firecrawl.dev) 的 `fc-...`），点 **保存**。密钥不会回显。改名时 key 留空表示保留原 key。
 3. 用会暴露 `web_search` 的新会话。
 
