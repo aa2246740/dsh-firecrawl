@@ -14,7 +14,7 @@ PATH 上要有官方 `dsh`（没有就用 `npx @deepseek-ai/dsh`）和 **pnpm**�
 
 这个 bundle 会把官方 `web.searchProvider` 设成 `firecrawl`，并保留 `fetchProvider: http`。账号在侧栏 **插件** 里打开已安装的 `dsh-web-search-firecrawl`，再点该行的 **配置**。
 
-面向官方 DeepSeek Harness **0.1.7-rc.1**。
+面向官方 DeepSeek Harness **0.1.7-rc.2**。Peer 范围仍是 `>=0.1.7-rc.1 <0.1.8`，因此接受 `0.1.7-rc.2`，拒绝 `0.1.7` alpha。
 
 ## 其它装法
 
@@ -22,7 +22,7 @@ PATH 上要有官方 `dsh`（没有就用 `npx @deepseek-ai/dsh`）和 **pnpm**�
 
 ```sh
 dsh plugin --profile web add ./dsh-firecrawl
-dsh plugin --profile web add ./dsh-web-search-firecrawl-0.1.2.tgz
+dsh plugin --profile web add ./dsh-web-search-firecrawl-0.1.3.tgz
 ```
 
 `dsh.bundle` 是开机捕获的。不要再往 profile 的 `cordis.patch.yml` 手写同一条 insert，会重复挂载。
