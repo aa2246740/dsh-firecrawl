@@ -8,6 +8,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const pkg = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'))
 const patch = readFileSync(join(root, 'cordis.patch.yml'), 'utf8')
 const readme = readFileSync(join(root, 'README.md'), 'utf8')
+const lock = readFileSync(join(root, 'pnpm-lock.yaml'), 'utf8')
 const host = readFileSync(join(root, 'lib/dsh-web-search-firecrawl.js'), 'utf8')
 const client = readFileSync(join(root, 'lib/client.js'), 'utf8')
 
@@ -27,17 +28,18 @@ describe('stock DSH bundle', () => {
     assert.match(host, /export \{/)
     assert.match(client, /^window\.__ModuleLoader__\.load\(\{/)
     assert.match(client, /id: "dsh-web-search-firecrawl"/)
+    assert.match(client, /autoComplete: "new-password"/)
   })
 
   it('README leads with the official stock one-liner and names pnpm', () => {
     const fence = readme.match(/```sh\n([\s\S]*?)```/)
     assert.equal(fence?.[1].trim(), 'dsh plugin --profile web add github:aa2246740/dsh-firecrawl')
     assert.match(readme, /\*\*pnpm\*\*/)
-    assert.match(readme, /0\.1\.7-rc\.1/)
+    assert.match(readme, /0\.1\.7-rc\.2/)
     assert.doesNotMatch(readme, /activate-new-client|my-plugins|DSHX_HARNESS|dshx /)
   })
 
-  it('Harness peers accept 0.1.7-rc.1 and stay off 0.1.7 alphas', () => {
+  it('Harness peers accept 0.1.7-rc.2 and stay off 0.1.7 alphas', () => {
     const peers = pkg.peerDependencies
     const dev = pkg.devDependencies
     const range = '>=0.1.7-rc.1 <0.1.8'
@@ -60,5 +62,7 @@ describe('stock DSH bundle', () => {
     assert.equal(peers['@deepseek-ai/dsh-client-ui-settings-plugins'], undefined)
     const declared = JSON.stringify({ peers, dev })
     assert.doesNotMatch(declared, /0\.1\.2-rc\.1|0\.1\.5-rc\.3|0\.1\.7-alpha/)
+    assert.match(lock, /'@deepseek-ai\/dsh-web@0\.1\.7-rc\.2'/)
+    assert.doesNotMatch(lock, /@0\.1\.7-rc\.1'/)
   })
 })

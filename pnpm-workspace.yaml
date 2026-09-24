@@ -1,6 +1,6 @@
 # Standalone external-plugin workspace: every @deepseek-ai dependency resolves
 # from the public registry, never from a Harness checkout. pnpm 10 rejects a
 # name pattern combined with a version, so the scope pattern exempts the
-# pinned 0.1.7-rc.1 lines from the release-age delay.
+# pinned 0.1.7-rc.2 lines from the release-age delay.
 minimumReleaseAgeExclude:
   - '@deepseek-ai/*'
