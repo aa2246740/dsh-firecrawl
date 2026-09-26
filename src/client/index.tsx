@@ -47,7 +47,7 @@ function AccountRow({ account, configured, busy, save, remove }: {
         <input aria-label="账号名称" style={inputStyle} value={label} onChange={event => setLabel(event.target.value)} />
       </label>
       <label style={{ display: 'grid', gap: 4 }}>API key · {configured === undefined ? '状态待确认' : configured ? '已配置' : '未配置'}
-        <input aria-label="Firecrawl API key" style={inputStyle} type="password" autoComplete="off" value={key}
+        <input aria-label="Firecrawl API key" style={inputStyle} type="password" autoComplete="new-password" value={key}
           placeholder={configured ? '留空保留已有 key' : 'fc-...'} onChange={event => setKey(event.target.value)} />
       </label>
       <button style={buttonStyle} onClick={() => { void save(label, key).then(() => setKey('')).catch(() => {}) }}>保存</button>
