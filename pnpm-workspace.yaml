@@ -1,6 +1,9 @@
 # Standalone external-plugin workspace: every @deepseek-ai dependency resolves
 # from the public registry, never from a Harness checkout. pnpm 10 rejects a
 # name pattern combined with a version, so the scope pattern exempts the
-# pinned 0.1.7-rc.2 lines from the release-age delay.
+# pinned 0.2.0-rc.1 lines from the release-age delay.
+# `@deepseek-ai/dsh` is a peer of the running CLI. Do not auto-install that
+# package into this plugin; a nested CLI copy is not the Host.
+autoInstallPeers: false
 minimumReleaseAgeExclude:
   - '@deepseek-ai/*'

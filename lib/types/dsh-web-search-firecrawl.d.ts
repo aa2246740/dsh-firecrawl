@@ -36,7 +36,7 @@ export interface Config extends AccountSettings {
     cooldownMs?: number;
 }
 /**
- * Live profile config. Harness 0.1.7 reads editable fields from the plugin
+ * Live profile config. Harness 0.2.0 reads editable fields from the plugin
  * Config schema; only `.volatile()` fields can change without remounting.
  * Each search calls `.get()` so one operation sees one snapshot.
  */
