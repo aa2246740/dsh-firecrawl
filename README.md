@@ -26,7 +26,7 @@ dsh plugin --profile web add github:aa2246740/dsh-firecrawl#v0.1.4
 
 这个 bundle 会把官方 `web.searchProvider` 设成 `firecrawl`，并保留 `fetchProvider: http`。账号在侧栏 **插件** 里打开已安装的 `dsh-web-search-firecrawl`，再点该行的 **配置**。
 
-面向官方 DeepSeek Harness **0.2.0-rc.1**（`@deepseek-ai/dsh@0.2.0-rc.1`）。`@deepseek-ai/dsh` 与同名 `@deepseek-ai/dsh-*` peer 是 `>=0.2.0-rc.1 <0.2.1`：接受 `0.2.0-rc.1` 和稳定版 `0.2.0`，拒绝 `0.2.0` alpha，也拒绝 `0.1.7-rc.2`。
+面向官方 DeepSeek Harness **0.2.0-rc.2**（`@deepseek-ai/dsh@0.2.0-rc.2`）。`@deepseek-ai/dsh` 与同名 `@deepseek-ai/dsh-*` peer 是 `>=0.2.0-rc.1 <0.2.1`：接受 `0.2.0-rc.2` 和稳定版 `0.2.0`，拒绝 `0.2.0` alpha，也拒绝 `0.1.7-rc.2`。
 
 ## 其它装法（开发/本地测试）
 
