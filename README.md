@@ -7,7 +7,7 @@
 打开 **设置 → 插件 → 添加插件**，在“包名或地址”中输入：
 
 ```text
-github:aa2246740/dsh-firecrawl#v0.1.3
+github:aa2246740/dsh-firecrawl#v0.1.4
 ```
 
 桌面端插件管理器负责 Desktop profile 和内置包管理器。本发布已包含编译好的 `lib/`；普通使用不需要 clone 或本地构建。若应用提示刷新或重新打开，请按提示完成。
@@ -15,7 +15,7 @@ github:aa2246740/dsh-firecrawl#v0.1.3
 ### Web CLI
 
 ```sh
-dsh plugin --profile web add github:aa2246740/dsh-firecrawl#v0.1.3
+dsh plugin --profile web add github:aa2246740/dsh-firecrawl#v0.1.4
 ```
 
 这条官方 CLI 命令只写入 `web` profile，不能修改 Desktop App 的 profile。对于已经运行的 Web Host，请重新打开该 Host 一次，再刷新网页。
@@ -26,7 +26,7 @@ dsh plugin --profile web add github:aa2246740/dsh-firecrawl#v0.1.3
 
 这个 bundle 会把官方 `web.searchProvider` 设成 `firecrawl`，并保留 `fetchProvider: http`。账号在侧栏 **插件** 里打开已安装的 `dsh-web-search-firecrawl`，再点该行的 **配置**。
 
-面向官方 DeepSeek Harness **0.1.7-rc.2**。Peer 范围仍是 `>=0.1.7-rc.1 <0.1.8`，因此接受 `0.1.7-rc.2`，拒绝 `0.1.7` alpha。
+面向官方 DeepSeek Harness **0.2.0-rc.2**（`@deepseek-ai/dsh@0.2.0-rc.2`）。`@deepseek-ai/dsh` 与同名 `@deepseek-ai/dsh-*` peer 是 `>=0.2.0-rc.1 <0.2.1`：接受 `0.2.0-rc.2` 和稳定版 `0.2.0`，拒绝 `0.2.0` alpha，也拒绝 `0.1.7-rc.2`。
 
 ## 其它装法（开发/本地测试）
 
@@ -34,7 +34,7 @@ dsh plugin --profile web add github:aa2246740/dsh-firecrawl#v0.1.3
 
 ```sh
 dsh plugin --profile web add ./dsh-firecrawl
-dsh plugin --profile web add ./dsh-web-search-firecrawl-0.1.3.tgz
+dsh plugin --profile web add ./dsh-web-search-firecrawl-0.1.4.tgz
 ```
 
 `dsh.bundle` 是开机捕获的。不要再往 profile 的 `cordis.patch.yml` 手写同一条 insert，会重复挂载。
