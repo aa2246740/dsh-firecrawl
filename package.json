@@ -1,6 +1,6 @@
 {
   "name": "dsh-web-search-firecrawl",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Firecrawl search provider and multi-account settings for DeepSeek Harness",
   "repository": {
     "type": "git",
