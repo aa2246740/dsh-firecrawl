@@ -36,14 +36,15 @@ describe('stock DSH bundle', () => {
     assert.match(readme, /设置 → 插件 → 添加插件/)
     assert.match(readme, /github:aa2246740\/dsh-firecrawl#v0\.1\.4/)
     assert.match(readme, /dsh plugin --profile web add github:aa2246740\/dsh-firecrawl#v0\.1\.4/)
-    assert.match(readme, /0\.2\.0-rc\.2/)
+    assert.match(readme, /0\.2\.1-rc\.2/)
     assert.doesNotMatch(readme, /activate-new-client|my-plugins|DSHX_HARNESS|dshx/i)
   })
 
-  it('Harness peers accept 0.2.0-rc.2 and stable 0.2.0, and reject alphas and 0.1.7-rc.2', () => {
+  it('Harness peers and engines.dsh accept 0.2.1-rc.2 and stable 0.2.1, and reject alphas and 0.2.0-rc.2', () => {
     const peers = pkg.peerDependencies
     const dev = pkg.devDependencies
-    const range = '>=0.2.0-rc.1 <0.2.1'
+    const range = '>=0.2.1-rc.1 <0.2.2'
+    assert.equal(pkg.engines?.dsh, range)
     assert.equal(peers['@deepseek-ai/dsh'], range)
     for (const name of [
       '@deepseek-ai/dsh-api-remotes',
@@ -62,13 +63,14 @@ describe('stock DSH bundle', () => {
       assert.equal(dev[name], range)
     }
     assert.equal(peers['@deepseek-ai/dsh-client-ui-settings-plugins'], undefined)
-    assert.equal(semver.satisfies('0.2.0-rc.2', range), true)
-    assert.equal(semver.satisfies('0.2.0', range), true)
-    assert.equal(semver.satisfies('0.2.0-alpha.1', range), false)
-    assert.equal(semver.satisfies('0.1.7-rc.2', range), false)
-    const declared = JSON.stringify({ peers, dev })
-    assert.doesNotMatch(declared, /0\.1\.7-rc\.1|0\.1\.7-rc\.2|0\.2\.0-alpha/)
-    assert.match(lock, /'@deepseek-ai\/dsh-web@0\.2\.0-rc\.2'/)
-    assert.doesNotMatch(lock, /@0\.1\.7-rc\.2'/)
+    assert.equal(semver.satisfies('0.2.1-rc.1', range), true)
+    assert.equal(semver.satisfies('0.2.1-rc.2', range), true)
+    assert.equal(semver.satisfies('0.2.1', range), true)
+    assert.equal(semver.satisfies('0.2.1-alpha.5', range), false)
+    assert.equal(semver.satisfies('0.2.0-rc.2', range), false)
+    const declared = JSON.stringify({ peers, dev, engines: pkg.engines })
+    assert.doesNotMatch(declared, /0\.2\.0-rc\.1|0\.2\.0-rc\.2|0\.2\.1-alpha/)
+    assert.match(lock, /'@deepseek-ai\/dsh-web@0\.2\.1-rc\.2'/)
+    assert.doesNotMatch(lock, /@0\.2\.0-rc\.2'/)
   })
 })
